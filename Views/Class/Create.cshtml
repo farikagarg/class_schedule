@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ClassTest.Models.ClassSchedule>
+
+<div class="container">
+    <h3>Cart</h3>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Availability</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var schedule in Model)
+                        {
+                            <tr>
+                                <th scope="row">@schedule.Date</th>
+                                <td>@schedule.Time</td>
+                                <td>@schedule.Availability</td>
+                                <td>
+                                    @if (schedule.Availability == "Full")
+                                    {
+                                        <button type="button" class="btn btn-primary">Full</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn btn-danger btn-book-now" data-toggle="modal" data-target="#myModal">Cancel</button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Add a click event handler to the "Book Now" buttons
+        $('.btn-book-now').click(function () {
+            // Find the closest parent row and hide it
+            $(this).closest('tr').hide();
+        });
+    });
+</script>

@@ -1,0 +1,150 @@
+﻿@model IEnumerable<ClassTest.Models.ClassSchedule>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+
+<style>
+    $shopping-cart-red: #DF0000;
+
+    .fa-stack[data-count]:after {
+        position: absolute;
+        right: 0%;
+        top: 0%;
+        content: attr(data-count);
+        font-size: 40%;
+        padding: .6em;
+        border-radius: 999px;
+        line-height: .75em;
+        color: white;
+        color: $shopping-cart-red;
+        text-align: center;
+        min-width: 2em;
+        font-weight: bold;
+        background: white;
+        border-style: solid;
+    }
+
+    .fa-circle {
+        color: #DF0000;
+    }
+
+    .red-cart {
+        color: #DF0000;
+        background: white;
+    }
+</style>
+
+
+<h1>Claim Your Free Trial Class</h1>
+<div style="text-align:right">
+
+
+    <a href="@Url.Action("Create", "Class")" class="elements">
+
+        <span class="fa-stack fa-2x has-badge" data-count="5">
+            <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+            <i style="" class="fa fa-shopping-cart fa-stack-2x red-cart"></i>
+        </span>
+    </a>
+
+
+
+</div>
+<h4 id="randomColumn">Free seats</h4>
+
+<h3 style="text-align:right" id="countdownDisplay"></h3>
+<div class="container">
+    <h3>Class Schedule</h3>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Availability</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var schedule in Model)
+                        {
+                            <tr>
+                                <th scope="row">@schedule.Date</th>
+                                <td>@schedule.Time</td>
+                                <td>@schedule.Availability</td>
+                                <td>
+                                    
+                                        <button type="button" id="btn-book-now" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Book Now</button>
+
+                                       
+                                   
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+
+        var countdownDisplay = $('#countdownDisplay');
+        var countdownSeconds = Math.floor(Math.random() * (45 - 10 + 1)) + 10;
+
+        function updateCountdown() {
+            countdownDisplay.text('Countdown: ' + countdownSeconds + ' seconds');
+            countdownSeconds--;
+
+            if (countdownSeconds < 0) {
+                countdownDisplay.text('Countdown expired');
+                // Optionally, you can perform some action when the countdown expires.
+            }
+        }
+
+        // Initial display
+        updateCountdown();
+
+        // Start the countdown
+        var countdownInterval = setInterval(function () {
+            updateCountdown();
+        }, 1000);
+
+       
+        var numberOfNumbers = 1; // You can change this value as needed
+
+        // Generate and display random numbers between 5 and 15
+        for (var i = 0; i < numberOfNumbers; i++) {
+            var randomNumber = Math.floor(Math.random() * (15 - 5 + 1)) + 5;
+            $('#randomColumn').append('<p>' + randomNumber + '</p>');
+        }
+
+        $('#btn-book-now').click(function () {
+            debugger
+            var availabilityCell = $(this).closest('tr').find('td:nth-child(3)');
+            var availability = parseInt(availabilityCell.text());
+
+            if (availability > 0) {
+                availability -= 1;
+                availabilityCell.text(availability);
+
+                // Change button color to red
+                $(this).removeClass('btn-primary').addClass('btn-danger');
+            }
+        });
+    });
+</script>
+
+
+
+
+
